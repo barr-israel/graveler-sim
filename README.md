@@ -3,6 +3,7 @@ Simulating graveler battles for the softlock described in [Pikasprey‬'s](https
 
 ## Download
 Simply download a version matching your machine from releases, but performance will likely be lower due to not having native target compilation, and will be set using half the available threads
+A different executable was compiled for different x86_64 instruction sets([wikipedia](https://en.wikipedia.org/wiki/X86-64#Microarchitecture)), an executable for a newer set than available on the machine will not run.
 ## Compilation
 To compile the code, you need to have rust nightly installed, and then run the performance maximised build command:
 ```rust
