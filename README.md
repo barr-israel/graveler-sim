@@ -9,8 +9,8 @@ To compile the code, you need to have rust nightly installed, and then run the p
 ```rust
 cargo +nightly build --profile max
 ```
-+nightly is optional if nightly is the default toolchain on the machine.
-native targetting was enabled for all tier 1 64 bit targets, for other targets adding the -Ctarget-cpu=native will increase performance significantly.
++nightly is optional if nightly is the default toolchain on the machine.  
+native targetting was enabled for all tier 1 64 bit targets, for other targets adding the -Ctarget-cpu=native will increase performance significantly.  
 the amount of threads used optimally can be different between different CPUs, it is set to half the available threads by default and can be changed directly in the code if testing other values is desired.
 
 The executable will be generated in ./target/max/graveler (on windows it will be graveler.exe)
