@@ -16,7 +16,7 @@ the amount of threads used optimally can be different between different CPUs, it
 The executable will be generated in ./target/max/graveler (on windows it will be graveler.exe)
 
 ## Usage
-Simple run the executable and the highest number found will be printed shortle
+Simple run the executable via any terminal and the highest number found will be printed shortly.
 
 ## Performance
 Performance was measured using hyperfine
