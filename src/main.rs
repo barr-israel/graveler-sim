@@ -41,7 +41,7 @@ fn par_roll() -> u8 {
     // splits the work into threads, half the available threads was found to be best(blame
     // hyper-threading)
     rayon::ThreadPoolBuilder::new()
-        .num_threads(std::thread::available_parallelism().unwrap().get())
+        .num_threads(std::thread::available_parallelism().unwrap().get() / 2)
         .build_global()
         .unwrap();
     (0..rayon::current_num_threads())
