@@ -31,7 +31,7 @@ fn thread_roll() -> u8 {
     rand::thread_rng().fill_bytes(&mut *seed);
     let mut rng = Xoshiro256PlusX8::from_seed(seed);
     // = to make it round up and not miss the last roll, /2 because each function call contains 2 sets rolls
-    (0..=(1_000_000_000 / 2) / rayon::current_num_threads())
+    (0..((1_000_000_000 / 2) / rayon::current_num_threads()) + 1)
         .map(|_| double_coin_roll(&mut rng))
         .max()
         .unwrap() as u8
@@ -41,7 +41,7 @@ fn par_roll() -> u8 {
     // splits the work into threads, half the available threads was found to be best(blame
     // hyper-threading)
     rayon::ThreadPoolBuilder::new()
-        .num_threads(std::thread::available_parallelism().unwrap().get() / 2)
+        .num_threads(std::thread::available_parallelism().unwrap().get())
         .build_global()
         .unwrap();
     (0..rayon::current_num_threads())
