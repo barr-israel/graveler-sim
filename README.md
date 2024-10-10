@@ -32,5 +32,5 @@ Performance was measured using hyperfine
  The output is only for the kernel time and summarizing the kernel results, it does not include the CUDA runtime initalization, which can take significantly longer then the kernel.  
  | GPU                               | Average |
 |----------------|--------|
-| RTX 2070 Max-Q | 28.2ms |
+| RTX 2070 Mobile Max-Q | 28.2ms |
 | RTX 4080       | 6.36ms |
