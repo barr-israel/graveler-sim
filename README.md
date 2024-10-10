@@ -24,3 +24,13 @@ Performance was measured using hyperfine
 |-----------------------------------|---------------|--------------|-------------|
 | i7-10750H 6 Cores 12 Threads      | 2.78s         | 512ms        | 531ms       |
 | Ryzen 7950x3d 16 Cores 32 Threads | 1.78s         | 134ms        | 117ms       |
+
+## GPU Implementation
+ In the cuda folder, there is a CUDA implementation of a nearly identical algorithm, for running on an Nvidia GPU.
+ To compile it, you need CUDA installed, and can simply run `make` to compile both the normal version and the benchmark version.
+ The benchmark version runs the kernel 10 times as warmp up and then 10 more to time it and output the average of the 10 runs.
+ The output is only for the kernel time and summarizing the kernel results, it does not include the CUDA runtime initalization, which can take significantly longer then the kernel.
+ | GPU                               | Average |
+|----------------|--------|
+| RTX 2070 Max-Q | 28.2ms |
+| RTX 4080       | 6.36ms |
