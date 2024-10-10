@@ -21,15 +21,15 @@ int main() {
   rng<<<block_count, BLOCKSIZE>>>(d_grid_max, 42);
   // rng<<<block_count, BLOCKSIZE>>>(d_grid_max, time(nullptr));
   cudaDeviceSynchronize();
-  cudaEventRecord(stop, nullptr);
   float t = 0;
   int global_max = d_grid_max[0];
   for (int i = 1; i < block_count; i++) {
     global_max = max(global_max, d_grid_max[i]);
   }
+  cudaEventRecord(stop, nullptr);
+  std::cout << "Max: " << global_max << '\n';
   cudaEventElapsedTime(&t, start, stop);
   std::cout << "kernel ran in " << t << "\n";
-  std::cout << "Max: " << global_max << '\n';
   cudaFree(d_grid_max);
   return 0;
 }
