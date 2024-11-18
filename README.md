@@ -23,7 +23,7 @@ Performance was measured using hyperfine
 | CPU                               | Single Thread | Half Threads | All Threads |
 |-----------------------------------|---------------|--------------|-------------|
 | i7-10750H 6 Cores 12 Threads      | 2.78s         | 512ms        | 531ms       |
-| Ryzen 7950x3d 16 Cores 32 Threads | 1.78s         | 134ms        | 117ms       |
+| Ryzen 7950X3D 16 Cores 32 Threads | 1.78s         | 134ms        | 117ms       |
 
 ## GPU Implementation
  In the cuda folder, there is a CUDA implementation of a nearly identical algorithm, for running on an Nvidia GPU.  
