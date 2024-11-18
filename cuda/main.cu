@@ -3,13 +3,13 @@
 
 #define BLOCKSIZE 1024
 int main() {
-  unsigned char *d_grid_max;
+  int *d_grid_max;
   int deviceId;
   cudaDeviceProp prop;
   cudaEvent_t start, stop;
   cudaEventCreate(&start);
   cudaEventCreate(&stop);
-  cudaEventRecord(start, nullptr);
+  cudaEventRecord(start);
   cudaGetDevice(&deviceId);
   cudaGetDeviceProperties(&prop, deviceId);
   int sm_count = prop.multiProcessorCount;
@@ -17,16 +17,16 @@ int main() {
   cudaOccupancyMaxActiveBlocksPerMultiprocessor(&block_per_sm, rng, BLOCKSIZE,
                                                 0);
   int block_count = sm_count * block_per_sm;
-  cudaMallocManaged(&d_grid_max, block_count);
+  cudaMallocManaged(&d_grid_max, block_count * sizeof(int));
   rng<<<block_count, BLOCKSIZE>>>(d_grid_max, 42);
-  // rng<<<block_count, BLOCKSIZE>>>(d_grid_max, time(nullptr));
   cudaDeviceSynchronize();
   float t = 0;
   int global_max = d_grid_max[0];
   for (int i = 1; i < block_count; i++) {
     global_max = max(global_max, d_grid_max[i]);
   }
-  cudaEventRecord(stop, nullptr);
+  cudaEventRecord(stop);
+  cudaEventSynchronize(stop);
   std::cout << "Max: " << global_max << '\n';
   cudaEventElapsedTime(&t, start, stop);
   std::cout << "kernel ran in " << t << "\n";
