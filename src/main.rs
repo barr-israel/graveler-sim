@@ -1,5 +1,6 @@
+use std::thread;
+
 use rand_core::{RngCore, SeedableRng};
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use simd_rand::portable::{SimdRandX8, Xoshiro256PlusX8, Xoshiro256PlusX8Seed};
 
 fn main() {
@@ -8,7 +9,7 @@ fn main() {
 }
 
 const MASK: u64 = !((1 << 25) - 1); // we don't want the last 25 bits
-fn double_coin_roll(rng: &mut Xoshiro256PlusX8) -> u32 {
+fn double_roll(rng: &mut Xoshiro256PlusX8) -> u32 {
     let roll = rng.next_u64x8();
     let roll2 = rng.next_u64x8();
     // if both bits are 1, that roll is a 1 out of 4
@@ -25,40 +26,25 @@ fn double_coin_roll(rng: &mut Xoshiro256PlusX8) -> u32 {
             + (res[7] & MASK).count_ones(),
     )
 }
-fn thread_roll() -> u8 {
+fn thread_roll(rolls: u32) -> u8 {
     // seeding the generator
     let mut seed: Xoshiro256PlusX8Seed = Default::default();
     rand::thread_rng().fill_bytes(&mut *seed);
     let mut rng = Xoshiro256PlusX8::from_seed(seed);
-    (0..((1_000_000_000 / 2) / rayon::current_num_threads()) + 1)
-        .map(|_| double_coin_roll(&mut rng))
-        .max()
-        .unwrap() as u8
+    (0..rolls).map(|_| double_roll(&mut rng)).max().unwrap() as u8
 }
-#[allow(dead_code)]
 fn par_roll() -> u8 {
-    // splits the work into threads, half the available threads was found to be best(blame
-    // hyper-threading)
-    rayon::ThreadPoolBuilder::new()
-        // .num_threads(std::thread::available_parallelism().unwrap().get() / 2)
-        .num_threads(12)
-        .build_global()
-        .unwrap();
-    (0..rayon::current_num_threads())
-        .into_par_iter()
-        .map(|_| thread_roll())
+    // let thread_count: u32 = thread::available_parallelism().unwrap().get() as u32;
+    let thread_count: u32 = 12;
+    let per_thread: u32 = 500_000_000 / thread_count + 1;
+    let threads: Vec<thread::JoinHandle<u8>> = (1..thread_count)
+        .map(|_| thread::spawn(move || thread_roll(per_thread)))
+        .collect();
+    let local_result = thread_roll(per_thread);
+    threads
+        .into_iter()
+        .map(|t| t.join().unwrap())
         .max()
-        .unwrap()
-}
-#[allow(dead_code)]
-fn roll() -> u8 {
-    // seeding the generator
-    let mut seed: Xoshiro256PlusX8Seed = Default::default();
-    rand::thread_rng().fill_bytes(&mut *seed);
-    let mut rng = Xoshiro256PlusX8::from_seed(seed);
-    // = to make it round up and not miss the last roll, /2 because each function call contains 2 sets rolls
-    (0..1_000_000_000 / 2)
-        .map(|_| double_coin_roll(&mut rng))
-        .max()
-        .unwrap() as u8
+        .unwrap_or(0)
+        .max(local_result)
 }
