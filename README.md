@@ -1,6 +1,8 @@
 # Graveler Simulation
 Simulating graveler battles for the softlock described in [Pikasprey‬'s](https://www.youtube.com/watch?v=GgMl4PrdQeo&t=0s) and [Shoddycast's](https://www.youtube.com/watch?v=M8C8dHQE2Ro) videos
 
+A post explaining how I implmented this project can be found on [my blog](https://barrcodes.dev/posts/graveler-simulation/).
+
 ## Download
 Simply download a version matching your machine from releases, but performance will likely be lower due to not having native target compilation, and will be set using half the available threads.  
 A different executable was compiled for different x86_64 instruction sets([wikipedia](https://en.wikipedia.org/wiki/X86-64#Microarchitecture)), newer sets will have a better performance, but an executable for a newer set than available on the machine will not run.
