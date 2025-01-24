@@ -3,7 +3,7 @@
 #define WARPSIZE 32
 
 __global__ void rng(int *max_block_arr, int seed) {
-  static const int MASK = !((1 << 25) - 1);
+  static const int MASK = ~((1 << 25) - 1);
   unsigned int index = threadIdx.x + blockIdx.x * blockDim.x;
   unsigned int warpIdx = threadIdx.x / WARPSIZE;
   unsigned int index_in_warp = threadIdx.x % WARPSIZE;
