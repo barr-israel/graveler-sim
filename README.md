@@ -27,16 +27,17 @@ If the amount of threads to use is not specified, it will be set to the amount o
 
 ## Performance
 Performance was measured using hyperfine
-| CPU                               | Single Thread | Half Threads | All Threads |
-|-----------------------------------|---------------|--------------|-------------|
-| i7-10750H 6 Cores 12 Threads      | 2.78s         | 512ms        | 531ms       |
-| Ryzen 7950X3D 16 Cores 32 Threads | 1.78s         | 134ms        | 117ms       |
+| CPU                                     | Single Thread | Half Threads | All Threads |
+|-----------------------------------------|---------------|--------------|-------------|
+| i7-10750H 6 Cores 12 Threads            | 2.78s         | 512ms        | 531ms       |
+| Ryzen 7950X3D 16 Cores 32 Threads       | 1.78s         | 134ms        | 117ms       |
+| 2x Xeon Gold 5420+ 56 Cores 112 Threads | 3.73s         | 71.3ms       | 69.9ms      |
 
 ## GPU Implementation
- In the cuda folder, there is a CUDA implementation of a nearly identical algorithm, for running on an Nvidia GPU.  
+ In the CUDA folder, there is a CUDA implementation of a nearly identical algorithm, for running on an Nvidia GPU.  
  To compile it, you need CUDA installed, and can simply run `make` to compile both the normal version and the benchmark version.  
- The benchmark version runs the kernel 50 times as warmp up and then 1000 more to time it and output the average of the 1000 runs.  
- The output is only for the kernel time and summarizing the kernel results, it does not include the CUDA runtime initalization, which can take significantly longer then the kernel.  
+ The benchmark version runs the kernel 50 times as warm-up up and then 1000 more to time it and outputs the average of the 1000 runs.  
+ The output is only for the kernel time and summarizing the kernel results, it does not include the CUDA runtime initialization, which can take significantly longer then the kernel.  
 | GP U                  | Average |
 |-----------------------|---------|
 | RTX 2070 Mobile Max-Q | 31.51ms |
