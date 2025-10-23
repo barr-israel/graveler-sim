@@ -8,7 +8,7 @@ Simply download a version matching your machine from releases, but performance w
 A different executable was compiled for different x86_64 instruction sets([wikipedia](https://en.wikipedia.org/wiki/X86-64#Microarchitecture)), newer sets will have a better performance, but an executable for a newer set than available on the machine will not run.
 ## Compilation
 To compile the code, you need to have rust nightly installed, and then run the performance maximised build command:
-```rust
+```bash
 cargo +nightly build --profile max
 ```
 +nightly is optional if nightly is the default toolchain on the machine.  
@@ -18,7 +18,12 @@ the amount of threads used optimally can be different between different CPUs, it
 The executable will be generated in ./target/max/graveler (on windows it will be graveler.exe)
 
 ## Usage
-Simple run the executable via any terminal and the highest number found will be printed shortly.
+
+```bash
+./target/max/graveler <threads>
+```
+
+If the amount of threads to use is not specified, it will be set to the amount of available logical CPUs by default.
 
 ## Performance
 Performance was measured using hyperfine

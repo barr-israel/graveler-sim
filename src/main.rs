@@ -34,9 +34,14 @@ fn thread_roll(rolls: u32) -> u8 {
     (0..rolls).map(|_| double_roll(&mut rng)).max().unwrap() as u8
 }
 fn par_roll() -> u8 {
-    // let thread_count: u32 = thread::available_parallelism().unwrap().get() as u32;
-    let thread_count: u32 = 12;
-    let per_thread: u32 = 500_000_000 / thread_count + 1;
+    let thread_count = std::env::args().nth(1).map_or_else(
+        || {
+            println!("Expected thread count parametr, using all threads by default");
+            thread::available_parallelism().unwrap().get()
+        },
+        |param| param.parse().expect("Invalid thread count"),
+    ) as u32;
+    let per_thread = 500_000_000 / thread_count + 1;
     let threads: Vec<thread::JoinHandle<u8>> = (1..thread_count)
         .map(|_| thread::spawn(move || thread_roll(per_thread)))
         .collect();
